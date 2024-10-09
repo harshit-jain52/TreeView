@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import { FaFolder, FaFolderOpen } from "react-icons/fa";
 import Item from "./Item";
 
@@ -53,12 +53,12 @@ const Godown = ({ id, name, level }) => {
 
   return (
     <>
-      {level}
       <Button
         leftIcon={isExpanded ? <FaFolderOpen /> : <FaFolder />}
         onClick={() => {
           setIsExpanded(!isExpanded);
         }}
+        color={`red.${level * 300}`}
       >
         {name}
       </Button>
@@ -67,18 +67,18 @@ const Godown = ({ id, name, level }) => {
           {(isLoading1 || isLoading2) && <div>Loading...</div>}
           {(isError1 || isError2) && <div>Error fetching data</div>}
           {items && (
-            <ul>
+            <VStack align="start" ml={4 * level}>
               {items.map((item) => (
                 <Item key={item.id} item={item} />
               ))}
-            </ul>
+            </VStack>
           )}
           {subgodowns && (
-            <ul>
+            <VStack spacing={2} align="start" ml={4 * level}>
               {subgodowns.map((subgodown) => (
                 <Godown key={subgodown.id} {...subgodown} level={level + 1} />
               ))}
-            </ul>
+            </VStack>
           )}
         </>
       )}

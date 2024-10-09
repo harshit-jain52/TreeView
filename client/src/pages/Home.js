@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { VStack } from "@chakra-ui/react";
 import Godown from "../components/Godown";
 
 const Home = () => {
@@ -34,12 +35,11 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Godowns</h1>
-      <ul>
+      <VStack spacing={2} align="start" ml={4}>
         {godowns.map((godown) => (
           <Godown key={godown.id} {...godown} level={1} />
         ))}
-      </ul>
+      </VStack>
     </div>
   );
 };
