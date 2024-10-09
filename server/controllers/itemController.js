@@ -4,7 +4,7 @@ const Location = require("../models/locationModel");
 const getGodownItems = async (req, res) => {
     const { godown_id } = req.params;
     try {
-        const items = await Item.find({ godown_id });
+        const items = await Item.find({ godown_id }).select("item_id name");
         res.status(200).json(items);
     } catch (error) {
         res.status(404).json({ message: error.message });

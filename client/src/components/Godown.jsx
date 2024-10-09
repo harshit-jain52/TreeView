@@ -1,4 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Button } from "@chakra-ui/react";
+import { FaFolder, FaFolderOpen } from "react-icons/fa";
 import Item from "./Item";
 
 const Godown = ({ id, name, level }) => {
@@ -46,26 +49,40 @@ const Godown = ({ id, name, level }) => {
     },
   });
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
-    <li>
-      {level} {name}
-      {(isLoading1 || isLoading2) && <div>Loading...</div>}
-      {(isError1 || isError2) && <div>Error fetching data</div>}
-      {items && (
-        <ul>
-          {items.map((item) => (
-            <Item key={item.id} item={item} />
-          ))}
-        </ul>
+    <>
+      {level}
+      <Button
+        leftIcon={isExpanded ? <FaFolderOpen /> : <FaFolder />}
+        onClick={() => {
+          setIsExpanded(!isExpanded);
+        }}
+      >
+        {name}
+      </Button>
+      {isExpanded && (
+        <>
+          {(isLoading1 || isLoading2) && <div>Loading...</div>}
+          {(isError1 || isError2) && <div>Error fetching data</div>}
+          {items && (
+            <ul>
+              {items.map((item) => (
+                <Item key={item.id} item={item} />
+              ))}
+            </ul>
+          )}
+          {subgodowns && (
+            <ul>
+              {subgodowns.map((subgodown) => (
+                <Godown key={subgodown.id} {...subgodown} level={level + 1} />
+              ))}
+            </ul>
+          )}
+        </>
       )}
-      {subgodowns && (
-        <ul>
-          {subgodowns.map((subgodown) => (
-            <Godown key={subgodown.id} {...subgodown} level={level + 1} />
-          ))}
-        </ul>
-      )}
-    </li>
+    </>
   );
 };
 

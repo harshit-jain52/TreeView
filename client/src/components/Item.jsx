@@ -1,8 +1,16 @@
+import { FaEye } from "react-icons/fa";
+import { Button } from "@chakra-ui/react";
+
 const Item = ({ item }) => {
   return (
-    <li>
-      {item.name} - {item.quantity}
-    </li>
+    <Button
+      leftIcon={<FaEye />}
+      variant={"outline"}
+      as={"a"}
+      href={`/viewitem/${item.item_id}`}
+    >
+      {item.name}
+    </Button>
   );
 };
 

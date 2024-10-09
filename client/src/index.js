@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import Home from "./pages/Home";
+import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -12,7 +12,7 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
-        <Home />
+        <App />
       </ChakraProvider>
     </QueryClientProvider>
   </React.StrictMode>
