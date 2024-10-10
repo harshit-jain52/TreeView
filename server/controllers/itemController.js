@@ -15,8 +15,15 @@ const getItem = async (req, res) => {
     const { item_id } = req.params;
     try {
         const item = await Item.findOne({ item_id });
-        const godown = await Location.findOne({ id: item.godown_id });
-        res.status(200).json({item, godown});
+        let godown = await Location.findOne({ id: item.godown_id });
+        let godowns = [godown];
+
+        while (godown.parent_godown) {
+            godown = await Location.findOne({ id: godown.parent_godown });
+            godowns.push(godown);
+        }
+
+        res.status(200).json({item, godowns});
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
