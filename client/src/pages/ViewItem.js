@@ -9,6 +9,9 @@ import {
   Heading,
   ListIcon,
   OrderedList,
+  Text,
+  Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import { FaBoxOpen, FaMoneyBillWave } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -39,41 +42,55 @@ const ViewItem = () => {
   });
 
   return (
-    <div>
-      {isLoading && <div>Loading...</div>}
+    <Flex justifyContent="center">
+      {isLoading && (
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="teal.500"
+          size="xl"
+        />
+      )}
       {isError && <div>Error fetching data</div>}
       {itemDetails && (
-        <HStack>
+        <HStack spacing={10}>
           <Box boxSize="sm">
             <Image
               src={itemDetails.item.image_url}
               alt={itemDetails.item.name}
+              boxSize="100%"
+              objectFit="cover"
+              borderRadius="md"
+              boxShadow="lg"
             />
           </Box>
 
-          <List>
+          <List spacing={3}>
             <ListItem>
-              <Heading>{itemDetails.item.name}</Heading>
+              <Heading size="xl" color="teal.500">
+                {itemDetails.item.name}
+              </Heading>
             </ListItem>
-            <ListItem>
-              <ListIcon as={FaBoxOpen} />
+            <ListItem fontSize="lg">
+              <ListIcon as={FaBoxOpen} color="blue.500" />
               Quantity: {itemDetails.item.quantity}
             </ListItem>
-            <ListItem>
-              <ListIcon as={FaMoneyBillWave} />
+            <ListItem fontSize="lg">
+              <ListIcon as={FaMoneyBillWave} color="green.500" />
               Price: {itemDetails.item.price}
             </ListItem>
-            <ListItem>
-              <ListIcon as={MdCategory} />
+            <ListItem fontSize="lg">
+              <ListIcon as={MdCategory} color="purple.500" />
               Category: {itemDetails.item.category}
             </ListItem>
-            <ListItem>
-              <ListIcon as={MdEditAttributes} />
+            <ListItem fontSize="lg">
+              <ListIcon as={MdEditAttributes} color="yellow.500" />
               Attributes:{" "}
               <OrderedList>
                 {Object.entries(itemDetails.item.attributes).map(
                   ([key, value]) => (
-                    <ListItem key={key}>
+                    <ListItem key={key} fontSize="sm">
                       {key
                         .replace(/_/g, " ")
                         .split(" ")
@@ -88,24 +105,31 @@ const ViewItem = () => {
               </OrderedList>
             </ListItem>
 
-            <ListItem
-              color={itemDetails.item.status === "in_stock" ? "green" : "red"}
-            >
+            <ListItem fontSize="lg">
               Status:{" "}
-              {itemDetails.item.status === "in_stock"
-                ? "In Stock"
-                : "Out of Stock"}
+              <Box
+                fontWeight="bold"
+                color={
+                  itemDetails.item.status === "in_stock"
+                    ? "green.500"
+                    : "red.500"
+                }
+              >
+                {itemDetails.item.status === "in_stock"
+                  ? "In Stock"
+                  : "Out of Stock"}
+              </Box>
             </ListItem>
-            <p>Brand: {itemDetails.item.brand}</p>
-            <ListItem>
-              <ListIcon as={FaLocationDot} />
+            <Text fontSize="lg">Brand: {itemDetails.item.brand}</Text>
+            <ListItem fontSize="lg">
+              <ListIcon as={FaLocationDot} color="orange.500" />
               Location:{" "}
               {itemDetails.godowns.map((godown) => godown.name).join(", ")}
             </ListItem>
           </List>
         </HStack>
       )}
-    </div>
+    </Flex>
   );
 };
 

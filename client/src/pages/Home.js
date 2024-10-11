@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { VStack } from "@chakra-ui/react";
+import { VStack, Spinner, Text } from "@chakra-ui/react";
 import Godown from "../components/Godown";
 
 const Home = () => {
@@ -11,7 +11,9 @@ const Home = () => {
     queryKey: ["godowns"],
     queryFn: async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/locations/godowns");
+        const response = await fetch(
+          "http://localhost:5000/api/locations/godowns"
+        );
         const data = await response.json();
 
         if (!response.ok) {
@@ -26,11 +28,19 @@ const Home = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="teal.500"
+        size="xl"
+      />
+    );
   }
 
   if (isError) {
-    return <div>Error fetching data</div>;
+    return <Text color={"red.500"}>Error fetching data</Text>;
   }
 
   return (
