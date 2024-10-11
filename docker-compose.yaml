@@ -1,21 +1,67 @@
 name: tree-view-app
 
 services:
+  mongo:
+    image: mongo:7.0.12
+    container_name: db_c
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - tree-view-app
+
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
     container_name: server_c
-    env_file: ./server/.env
-    ports:
-      - 5000:5000
     restart: unless-stopped
-    
+    env_file: ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - tree-view-app
+    depends_on:
+      - mongo
+
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
     container_name: client_c
-    ports:
-      - 3000:3000
     restart: unless-stopped
+    env_file: ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - tree-view-app
+    depends_on:
+      - server
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy_c
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - tree-view-app
+    depends_on:
+      - server
+      - client
+
+volumes:
+  mongo_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  tree-view-app:
+    driver: bridge

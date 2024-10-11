@@ -1,0 +1,12 @@
+{
+    local_certs
+}
+
+treeview.localhost {
+    encode gzip
+    reverse_proxy client:3000
+}
+
+api.treeview.localhost {
+    reverse_proxy server:5000
+}
