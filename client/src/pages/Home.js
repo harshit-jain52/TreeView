@@ -11,7 +11,7 @@ const Home = () => {
     queryKey: ["godowns"],
     queryFn: async () => {
       try {
-        const response = await fetch("api/locations/godowns");
+        const response = await fetch("http://localhost:5000/api/locations/godowns");
         const data = await response.json();
 
         if (!response.ok) {

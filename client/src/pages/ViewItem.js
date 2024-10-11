@@ -25,7 +25,7 @@ const ViewItem = () => {
     queryKey: [`item${id}`],
     queryFn: async () => {
       try {
-        const response = await fetch(`/api/items/${id}`);
+        const response = await fetch(`http://localhost:5000/api/items/${id}`);
         const data = await response.json();
         if (!response.ok) {
           throw new Error(data.message || "Something went wrong");

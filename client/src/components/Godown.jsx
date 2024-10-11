@@ -13,7 +13,7 @@ const Godown = ({ id, name, level }) => {
     queryKey: [`subgodowns${id}`],
     queryFn: async () => {
       try {
-        const response = await fetch(`api/locations/subgodowns/${id}`);
+        const response = await fetch(`http://localhost:5000/api/locations/subgodowns/${id}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -35,7 +35,7 @@ const Godown = ({ id, name, level }) => {
     queryKey: [`items${id}`],
     queryFn: async () => {
       try {
-        const response = await fetch(`api/items/godown/${id}`);
+        const response = await fetch(`http://localhost:5000/api/items/godown/${id}`);
         const data = await response.json();
 
         if (!response.ok) {
