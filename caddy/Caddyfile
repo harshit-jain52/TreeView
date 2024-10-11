@@ -1,12 +1,48 @@
-{
-    local_certs
-}
-
-treeview.localhost {
+{$DOMAIN_NAME:invalid} {
     encode gzip
-    reverse_proxy client:3000
+    reverse_proxy client:80
 }
 
-api.treeview.localhost {
+www.{$DOMAIN_NAME:invalid} {
+    redir https://treeview.localhost{uri} permanent
+}
+
+api.{$DOMAIN_NAME:invalid} {
     reverse_proxy server:5000
+
+    header {
+        -X-Powered-By
+        -Server
+
+        # enable HSTS
+        Strict-Transport-Security max-age=31536000;
+
+        # disable clients from sniffing the media type
+        X-Content-Type-Options nosniff
+
+        # clickjacking protection
+        X-Frame-Options DENY
+
+        # XSS Protection
+        X-XSS-Protection "1; mode=block"
+    }
+
+	rate_limit {
+        # limit requests based on IP address
+        zone api_limit {
+            # key {remote_host}
+            # if using Cloudflare proxy, use the following key:
+            key {http.request.header.CF-Connecting-IP}
+            events 1000
+            window 30s
+        }
+
+        zone burst_limit {
+            # key {remote_host}
+            # if using Cloudflare proxy, use the following key:
+            key {http.request.header.CF-Connecting-IP}
+            events 200
+            window 1s
+        }
+    }
 }

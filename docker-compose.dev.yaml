@@ -4,6 +4,8 @@ services:
   mongo:
     image: mongo:7.0.12
     container_name: db_c
+    ports:
+      - 27017:27017
     volumes:
       - mongo_data:/data/db
     networks:
@@ -16,6 +18,9 @@ services:
     container_name: server_c
     restart: unless-stopped
     env_file: ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
     networks:
       - tree-view-app
     depends_on:
@@ -24,27 +29,28 @@ services:
   client:
     build:
       context: ./client
-      target: production
+      target: development
       args:
-        REACT_APP_API_URL: https://api.${DOMAIN_NAME}
+        REACT_APP_API_URL: https://api.treeview.localhost
     container_name: client_c
     restart: unless-stopped
+    env_file: ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
     networks:
       - tree-view-app
     depends_on:
       - server
 
   caddy:
-    build:
-      context: ./caddy
-      dockerfile: Dockerfile
+    image: caddy:2-alpine
     container_name: caddy_c
-    environment:
-      DOMAIN_NAME: ${DOMAIN_NAME}
     ports:
       - 80:80
       - 443:443
     volumes:
+      - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
     networks:
