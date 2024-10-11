@@ -9,18 +9,27 @@ import {
 } from "@chakra-ui/react";
 import { FaFolder, FaFolderOpen } from "react-icons/fa";
 import Item from "./Item";
+import { BASE_URL } from "../App";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Godown = ({ id, name, level }) => {
+  const { user } = useAuthContext();
   const {
     data: subgodowns,
     isLoading1,
     isError1,
   } = useQuery({
-    queryKey: [`subgodowns${id}`],
+    queryKey: [`subgodowns${id}`, user],
     queryFn: async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/locations/subgodowns/${id}`
+          `${BASE_URL}/api/locations/subgodowns/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
         );
         const data = await response.json();
 
@@ -40,12 +49,15 @@ const Godown = ({ id, name, level }) => {
     isLoading2,
     isError2,
   } = useQuery({
-    queryKey: [`items${id}`],
+    queryKey: [`items${id}`, user],
     queryFn: async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/items/godown/${id}`
-        );
+        const response = await fetch(`${BASE_URL}/api/items/godown/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
         const data = await response.json();
 
         if (!response.ok) {

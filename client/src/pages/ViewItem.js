@@ -16,19 +16,26 @@ import {
 import { FaBoxOpen, FaMoneyBillWave } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdCategory, MdEditAttributes } from "react-icons/md";
+import { BASE_URL } from "../App";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const ViewItem = () => {
   const { id } = useParams();
-
+  const { user } = useAuthContext();
   const {
     data: itemDetails,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: [`item${id}`],
+    queryKey: [`item${id}`, user],
     queryFn: async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/items/${id}`);
+        const response = await fetch(`${BASE_URL}/api/items/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
         const data = await response.json();
         if (!response.ok) {
           throw new Error(data.message || "Something went wrong");

@@ -1,3 +1,6 @@
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
+
 import {
   Container,
   Box,
@@ -6,12 +9,14 @@ import {
   Grid,
   Button,
 } from "@chakra-ui/react";
-
-import { LuSun, LuMoon, LuGithub } from "react-icons/lu";
+import { LuSun, LuMoon } from "react-icons/lu";
+import { FaPowerOff } from "react-icons/fa";
 
 function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const bg = useColorModeValue("gray.300", "gray.700");
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
 
   return (
     <Container maxW={"1000px"}>
@@ -24,18 +29,16 @@ function Navbar() {
         >
           <Button
             variant={"ghost"}
-            leftIcon={<LuGithub />}
-            onClick={() =>
-              window.open(
-                "https://github.com/harshit-jain52/TreeView",
-                "_blank"
-              )
-            }
+            leftIcon={<FaPowerOff />}
+            onClick={() => {
+              user ? logout() : window.open("/login", "_self");
+            }}
             fontSize={"xl"}
             justifySelf={"start"}
           >
-            Repo
+            {user ? "Logout" : "Login"}
           </Button>
+
           <Button
             variant={"link"}
             fontSize={"3xl"}

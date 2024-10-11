@@ -1,19 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import { VStack, Spinner, Text } from "@chakra-ui/react";
 import Godown from "../components/Godown";
+import { BASE_URL } from "../App";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Home = () => {
+  const { user } = useAuthContext();
   const {
     data: godowns,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["godowns"],
+    queryKey: ["godowns", user],
     queryFn: async () => {
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/locations/godowns"
-        );
+        const response = await fetch(`${BASE_URL}/api/locations/godowns`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
         const data = await response.json();
 
         if (!response.ok) {
@@ -44,13 +50,13 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <>
       <VStack spacing={2} align="start" ml={4}>
         {godowns.map((godown) => (
           <Godown key={godown.id} {...godown} level={1} />
         ))}
       </VStack>
-    </div>
+    </>
   );
 };
 
