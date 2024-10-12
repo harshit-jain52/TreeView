@@ -29,4 +29,13 @@ const getItem = async (req, res) => {
     }
 }
 
-module.exports = { getGodownItems, getItem };
+const addItem = async (req, res) => {
+    try {
+        const item = await Item.create({...req.body});
+        res.status(200).json(item);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+module.exports = { getGodownItems, getItem, addItem };
