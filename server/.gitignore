@@ -2,3 +2,4 @@
 node_modules
 godowns.json
 items.json
+*.py
