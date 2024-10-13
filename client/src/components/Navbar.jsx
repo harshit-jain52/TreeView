@@ -8,15 +8,17 @@ import {
   useColorModeValue,
   Grid,
   Button,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { LuSun, LuMoon } from "react-icons/lu";
-import { FaPowerOff } from "react-icons/fa";
+import { FaPowerOff, FaHome } from "react-icons/fa";
 
 function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const bg = useColorModeValue("gray.300", "gray.700");
   const { logout } = useLogout();
   const { user } = useAuthContext();
+  const isMdScreenOrLarger = useBreakpointValue({ base: true, md: false });
 
   return (
     <Container maxW={"1000px"}>
@@ -44,7 +46,7 @@ function Navbar() {
             fontSize={"3xl"}
             onClick={() => window.open("/", "_self")}
           >
-            Tree View Application
+            {isMdScreenOrLarger ? <FaHome /> : "Tree View Application"}
           </Button>
           <Button onClick={toggleColorMode} fontSize={"xl"} justifySelf={"end"}>
             {colorMode === "dark" ? <LuSun /> : <LuMoon />}

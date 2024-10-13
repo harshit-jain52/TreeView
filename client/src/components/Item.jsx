@@ -1,5 +1,5 @@
 import { FaEye } from "react-icons/fa";
-import { Button } from "@chakra-ui/react";
+import { Button, Box } from "@chakra-ui/react";
 
 const Item = ({ item }) => {
   return (
@@ -8,8 +8,11 @@ const Item = ({ item }) => {
       variant={"outline"}
       as={"a"}
       href={`/viewitem/${item.item_id}`}
+      maxW={"95%"}
     >
-      {item.name}
+      <Box as="span" noOfLines={1}>
+        {item.name}
+      </Box>
     </Button>
   );
 };

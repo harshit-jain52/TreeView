@@ -6,6 +6,7 @@ import {
   Collapse,
   useColorModeValue,
   Spinner,
+  Box,
 } from "@chakra-ui/react";
 import { FaFolder, FaFolderOpen } from "react-icons/fa";
 import Item from "./Item";
@@ -83,8 +84,16 @@ const Godown = ({ id, name, level }) => {
         }}
         color={color}
         fontSize={"lg"}
+        whiteSpace={isExpanded ? "normal" : "nowrap"}
+        h={"auto"}
+        textAlign="left"
+        py={4}
+        px={2}
+        maxW={"95%"}
       >
-        {name}
+        <Box as="span" noOfLines={isExpanded ? 2 : 1}>
+          {name}
+        </Box>
       </Button>
       <Collapse in={isExpanded}>
         {(isLoading1 || isLoading2) && (

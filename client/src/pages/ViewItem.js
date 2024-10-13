@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   Box,
-  HStack,
+  Stack,
   Image,
   List,
   ListItem,
@@ -12,6 +12,7 @@ import {
   Text,
   Spinner,
   Flex,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { FaBoxOpen, FaMoneyBillWave } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -47,6 +48,8 @@ const ViewItem = () => {
       }
     },
   });
+  const direction = useBreakpointValue({ base: "column", md: "row" });
+  const imageSize = useBreakpointValue({ base: "100%", md: "md" });
 
   return (
     <Flex justifyContent="center">
@@ -61,8 +64,8 @@ const ViewItem = () => {
       )}
       {isError && <div>Error fetching data</div>}
       {itemDetails && (
-        <HStack spacing={10}>
-          <Box boxSize="sm">
+        <Stack direction={direction} spacing={10}>
+          <Box boxSize={imageSize} m={4}>
             <Image
               src={itemDetails.item.image_url}
               alt={itemDetails.item.name}
@@ -73,7 +76,7 @@ const ViewItem = () => {
             />
           </Box>
 
-          <List spacing={3}>
+          <List spacing={3} m={4}>
             <ListItem>
               <Heading size="xl" color="teal.500">
                 {itemDetails.item.name}
@@ -134,7 +137,7 @@ const ViewItem = () => {
               {itemDetails.godowns.map((godown) => godown.name).join(", ")}
             </ListItem>
           </List>
-        </HStack>
+        </Stack>
       )}
     </Flex>
   );
