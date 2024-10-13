@@ -13,12 +13,14 @@ import {
   Text,
   Link as ChakraLink,
   Container,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signup, error, isLoading } = useSignup();
+  const bg = useColorModeValue("gray.300", "gray.700");
 
   return (
     <Flex align="center" justify="center">
@@ -26,7 +28,7 @@ const Register = () => {
         <Heading fontSize="4xl" mb={8}>
           Create a new account
         </Heading>
-        <Box rounded="lg" bg="gray.700" boxShadow="lg" p={8}>
+        <Box rounded="lg" bg={bg} boxShadow="lg" p={8}>
           {error && (
             <Box mb={3} color="red.400">
               {error}
