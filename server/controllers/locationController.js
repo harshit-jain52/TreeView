@@ -28,4 +28,30 @@ const addLocation = async (req, res) => {
     }
 }
 
-module.exports = { getGodowns, getSubGodowns, addLocation };
+const getSearchedLocations = async (req, res) => {
+    const { query } = req.params;
+    try {
+        const locations = await Location.find({ name: { $regex: query, $options: 'i' } });
+        
+        const locationsWithAbsoluteAddress = await Promise.all(locations.map(async location => {
+            let absolute_address = location.name;
+            let curr = location;
+
+            while (curr.parent_godown) {
+                curr = await Location.findOne({id:curr.parent_godown});
+                absolute_address = `${curr.name} > ${absolute_address}`;
+            }
+
+            return {
+                ...location._doc,
+                absolute_address
+            };
+        }));
+
+        res.status(200).json(locationsWithAbsoluteAddress);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+module.exports = { getGodowns, getSubGodowns, addLocation, getSearchedLocations };
