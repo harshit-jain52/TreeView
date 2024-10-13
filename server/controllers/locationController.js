@@ -19,4 +19,13 @@ const getSubGodowns = async (req, res) => {
     }
 }
 
-module.exports = { getGodowns, getSubGodowns };
+const addLocation = async (req, res) => {
+    try {
+        const location = await Location.create({...req.body});
+        res.status(200).json(location);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+module.exports = { getGodowns, getSubGodowns, addLocation };

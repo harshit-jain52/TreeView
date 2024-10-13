@@ -7,6 +7,8 @@
 - Database: MongoDB
 - Reverse Proxy: Caddy
 - Containerization: Docker
+- Deployment: DigitalOcean
+- DNS: freedomain.one
 
 ### Set up the project
 
@@ -18,6 +20,11 @@
    - Production: `docker compose up --build`
 5. Frontend will be available at `https://treeview.localhost` and backend at `https://api.treeview.localhost`
 
+### Deployment Links
+
+- [Frontend](https://treeviewhj52.work.gd/)
+- [Backend](https://api.treeviewhj52.work.gd/)
+
 ### Demonstration
 
-[Google Drive Link](https://drive.google.com/file/d/1xecS3OcyOvB246mBU-iY4PofFhDvrSAk/view?usp=drive_link)
+[Google Drive Link](https://drive.google.com/file/d/1aeR1p5TgFe_YZbI7UzYRb9n98UKzLICj/view?usp=sharing)
