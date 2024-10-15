@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 export const BASE_URL = process.env.REACT_APP_API_URL;
+export const itemCategories = ["Electronics", "Clothing", "Furniture", "Toys"];
 
 const App = () => {
   return (

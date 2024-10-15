@@ -38,4 +38,20 @@ const addItem = async (req, res) => {
     }
 }
 
-module.exports = { getGodownItems, getItem, addItem };
+const getSearchedItems = async (req, res) => {
+    const { query, categories } = req.query;
+    const categoriesArr = categories.split(",");
+    try {
+        let items;
+        items = await Item.find({ 
+            name: { $regex: query, $options: 'i' },
+            category: { $in: categoriesArr }
+        }).select('name category');
+        
+        res.status(200).json(items);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+module.exports = { getGodownItems, getItem, addItem, getSearchedItems };

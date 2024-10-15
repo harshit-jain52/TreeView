@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { IoIosCloseCircle } from "react-icons/io";
 
-const Searchbar = ({ setSearchTerm, searchIcon }) => {
+const Searchbar = ({ setSearchTerm, searchIcon, defaultText }) => {
   const [search, setSearch] = useState("");
 
   const handleChange = (e) => {
@@ -23,7 +23,7 @@ const Searchbar = ({ setSearchTerm, searchIcon }) => {
       <InputLeftElement pointerEvents="none" children={searchIcon} />
       <Input
         type="text"
-        placeholder="Search Godowns"
+        placeholder={defaultText}
         value={search}
         onChange={handleChange}
       />
