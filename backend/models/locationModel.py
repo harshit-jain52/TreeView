@@ -1,7 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class Location(BaseModel):
-    id: str
-    name: str
-    parent_godown: str
+    id: str = Field(...)
+    name: str = Field(...)
+    parent_godown: Optional[str] = None

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from enum import Enum
 
 
@@ -8,13 +8,13 @@ class ItemStatus(str, Enum):
 
 
 class Item(BaseModel):
-    item_id: str
-    name: str
-    quantity: int
-    category: str
-    price: float
-    status: ItemStatus
-    godown_id: str
-    brand: str
-    attributes: dict
-    image_url: str
+    item_id: str = Field(...)
+    name: str = Field(...)
+    quantity: int = Field(...)
+    category: str = Field(...)
+    price: float = Field(...)
+    status: ItemStatus = Field(...)
+    godown_id: str = Field(...)
+    brand: str = Field(...)
+    attributes: dict = Field(...)
+    image_url: str = Field(...)
